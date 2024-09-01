@@ -1,0 +1,35 @@
+{
+  "name": "lexical-demo",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "build": "rsbuild build",
+    "dev": "rsbuild dev --open",
+    "format": "prettier --write .",
+    "preview": "rsbuild preview"
+  },
+  "dependencies": {
+    "@lexical/react": "^0.17.1",
+    "@lexical/rich-text": "^0.17.1",
+    "@lexical/selection": "^0.17.1",
+    "@lexical/utils": "^0.17.1",
+    "@radix-ui/react-select": "^2.1.1",
+    "@radix-ui/react-toggle": "^1.1.0",
+    "clsx": "^2.1.1",
+    "lexical": "^0.17.1",
+    "lucide-react": "^0.437.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@rsbuild/core": "1.0.1-rc.0",
+    "@rsbuild/plugin-react": "1.0.1-rc.0",
+    "@tailwindcss/typography": "^0.5.15",
+    "@types/react": "^18.3.5",
+    "@types/react-dom": "^18.3.0",
+    "prettier": "^3.3.3",
+    "tailwindcss": "^3.4.10",
+    "tailwindcss-animate": "^1.0.7",
+    "typescript": "^5.5.4"
+  }
+}
