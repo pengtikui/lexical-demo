@@ -2,28 +2,31 @@ import { FC, useEffect, useState } from 'react';
 import {
   $createParagraphNode,
   $getSelection,
-  $isElementNode,
   $isRangeSelection,
   $isRootOrShadowRoot,
-  ElementFormatType,
-  FORMAT_ELEMENT_COMMAND,
   FORMAT_TEXT_COMMAND,
   LexicalNode,
   TextFormatType,
 } from 'lexical';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { $findMatchingParent } from '@lexical/utils';
+import { $setBlocksType } from '@lexical/selection';
 import {
   $createHeadingNode,
   $createQuoteNode,
   $isHeadingNode,
   HeadingTagType,
 } from '@lexical/rich-text';
-import { $setBlocksType } from '@lexical/selection';
+import {
+  $isListNode,
+  INSERT_ORDERED_LIST_COMMAND,
+  INSERT_UNORDERED_LIST_COMMAND,
+} from '@lexical/list';
 import {
   ALargeSmallIcon,
   BoldIcon,
   CodeIcon,
+  CodeXmlIcon,
   Heading1Icon,
   Heading2Icon,
   Heading3Icon,
@@ -32,6 +35,8 @@ import {
   Heading6Icon,
   HighlighterIcon,
   ItalicIcon,
+  ListIcon,
+  ListOrderedIcon,
   QuoteIcon,
   StrikethroughIcon,
   SubscriptIcon,
@@ -95,9 +100,13 @@ const ToolbarPlugin: FC = () => {
           element = anchorNode.getTopLevelElementOrThrow();
         }
 
-        // 这里仅考虑了 Heading、Quote 和 Paragraph
-        const type = $isHeadingNode(element) ? element.getTag() : element.getType();
-        setBlockType(type);
+        if ($isListNode(element)) {
+          setBlockType(element.getListType());
+        } else if ($isHeadingNode(element)) {
+          setBlockType(element.getTag());
+        } else {
+          setBlockType(element.getType());
+        }
       });
     });
 
@@ -143,6 +152,20 @@ const ToolbarPlugin: FC = () => {
     });
   };
 
+  /**
+   * 设置为无序列表
+   */
+  const formatUnorderedList = () => {
+    editor.dispatchCommand(INSERT_UNORDERED_LIST_COMMAND, undefined);
+  };
+
+  /**
+   * 设置为有序列表
+   */
+  const formatOrderedList = () => {
+    editor.dispatchCommand(INSERT_ORDERED_LIST_COMMAND, undefined);
+  };
+
   const handleBlockTypeChange = (type: string) => {
     setBlockType(type);
     if (type === 'paragraph') {
@@ -161,6 +184,12 @@ const ToolbarPlugin: FC = () => {
     if (type === 'quote') {
       formatQuote();
     }
+    if (type === 'bullet') {
+      formatUnorderedList();
+    }
+    if (type === 'number') {
+      formatOrderedList();
+    }
   };
 
   return (
@@ -176,6 +205,9 @@ const ToolbarPlugin: FC = () => {
         <SelectItem value="h6" label="六级标题" icon={Heading6Icon} />
         <SelectSeparator />
         <SelectItem value="quote" label="引用块" icon={QuoteIcon} />
+        <SelectSeparator />
+        <SelectItem value="bullet" label="无序列表" icon={ListIcon} />
+        <SelectItem value="number" label="有序列表" icon={ListOrderedIcon} />
       </Select>
       <div className="w-px h-5 mx-2 bg-gray-200 rounded"></div>
       <div className="flex gap-x-1">

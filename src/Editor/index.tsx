@@ -4,6 +4,7 @@ import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { ContentEditable } from '@lexical/react/LexicalContentEditable';
 import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary';
 import { AutoFocusPlugin } from '@lexical/react/LexicalAutoFocusPlugin';
+import { ListPlugin } from '@lexical/react/LexicalListPlugin';
 import ToolbarPlugin from './plugins/ToolbarPlugin';
 import { NODES } from './nodes';
 
@@ -42,6 +43,7 @@ const Editor: FC<EditorProps> = () => {
           />
         </div>
         <AutoFocusPlugin />
+        <ListPlugin />
       </LexicalComposer>
     </div>
   );
